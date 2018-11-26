@@ -20,7 +20,7 @@ function createText(font, color, msg)
 	var ctx= canvas.getContext("2d");
 	ctx.font= font;
 	ctx.fillStyle= color;
-	ctx.fillText(msg, 0, height, width);
+	ctx.fillText(msg, 0, height-20);
 	data= canvas.toDataURL();
 	console.log(width.toString()+", "+height.toString());
 	console.log(data);
@@ -46,7 +46,7 @@ function createSprite(posX, posY, sizeX, sizeY, image)
 	mesh.translateY(posY);
 	return mesh;
 }
-var sprite= createSprite(400, 300, 400, 300, createText("300px Comic Sans MS", "#0000FF", "Startu"));
+var sprite= createSprite(200, 150, 400, 300, createText("300px Comic Sans MS", "#0000FF", "Startu"));
 scene.add(sprite);
 camera.position.z = 1
 console.log(sprite.position.x.toString());
