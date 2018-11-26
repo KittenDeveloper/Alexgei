@@ -7,31 +7,46 @@ renderer.setSize(window.innerWidth, window.innerHeight)
 document.body.appendChild(renderer.domElement);
 var square= new THREE.PlaneGeometry(1, 1);
 square.translate(-0.5, -0.5, 0);
+function createText(font, color, msg)
+{
+	var canvas= document.createElement("canvas");
+	var ctx= canvas.getContext("2d");
+	ctx.font= font;
+	height= ctx.measureText('M').width;
+	width= ctx.measureText(msg).width;
+	var canvas= document.createElement("canvas");
+	canvas.width= width;
+	canvas.height= height;
+	var ctx= canvas.getContext("2d");
+	ctx.font= font;
+	ctx.fillStyle= color;
+	ctx.fillText(msg, 0, height, width);
+	data= canvas.toDataURL();
+	console.log(width.toString()+", "+height.toString());
+	console.log(data);
+	return data;
+}
+material = undefined;
 function createSprite(posX, posY, sizeX, sizeY, image)
 {
-	function createRect(posX, posY, sizeX, sizeY, inColor)
+	if(typeof image==="number")
 	{
-		var color= new THREE.MeshBasicMaterial({color: inColor, side: THREE.BackSide});
-		var mesh= new THREE.Mesh(square, color);
-		mesh.scale.set(sizeX, sizeY, 1);
-		mesh.translateX(posX);
-		mesh.translateY(posY);
-		mesh.getLocation= function(){return new THREE.Vector3(sizeX/2, sizeY/2, 0).add(this.position);}
-		return mesh;
+		var material= new THREE.MeshBasicMaterial({color: image, side: THREE.BackSide});
 	}
-	if(typeof image==="number") return createRect(posX, posY, sizeX, sizeY, image);
-	var texture= new THREE.TextureLoader().load(image);
-	var material= new THREE.SpriteMaterial({map: texture, side: THREE.BackSide})
-	var sprite= new THREE.Sprite(material);
-	sprite.scale.set(sizeX, sizeY, 1);
-	sprite.translateX(sizeX/-2);
-	sprite.translateY(sizeY/-2);
-	sprite.translateX(posX);
-	sprite.translateY(posY);
-	sprite.getLocation= function(){return new THREE.Vector3(sizeX/2, sizeY/2, 0).add(this.position);}
-	return sprite;
+	else
+	{
+		var texture=new THREE.TextureLoader().load(image);
+		texture.flipY= false;
+		var material= new THREE.MeshBasicMaterial({map: texture, side: THREE.BackSide});
+		console.log("done");
+	}
+	var mesh= new THREE.Mesh(square, material);
+	mesh.scale.set(sizeX, sizeY, 1);
+	mesh.translateX(posX);
+	mesh.translateY(posY);
+	return mesh;
 }
-var sprite= createSprite(400, 300, 400, 300, 0x0000FF);
+var sprite= createSprite(400, 300, 400, 300, createText("300px Comic Sans MS", "#0000FF", "Startu"));
 scene.add(sprite);
 camera.position.z = 1
 console.log(sprite.position.x.toString());
