@@ -23,8 +23,6 @@ function createText(font, color, msg)
 	ctx.fillStyle= color;
 	ctx.fillText(msg, 0, height-20);
 	data= canvas.toDataURL();
-	// console.log(width.toString()+", "+height.toString());
-	// console.log(data);
 	return data;
 }
 material = undefined;
@@ -58,7 +56,6 @@ renderer.domElement.addEventListener("click", function()
 {
 	var rc= new THREE.Raycaster();
 	rc.setFromCamera(ndcMouse, camera);
-//	rc.ray.origin.z= 1;
 	if(rc.intersectObject(startButton).length) alert("started");
 });
 var clock= THREE.Clock();
